@@ -239,7 +239,6 @@ class VideoController extends GetxController {
       File file = File(savePath);
       if (await file.exists()) {
         await OpenFile.open(savePath);
-        Get.back();
       } else {
         Get.showSnackbar(
           snackBarWidget(

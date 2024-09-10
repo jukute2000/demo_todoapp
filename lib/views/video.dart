@@ -126,7 +126,8 @@ class Video extends StatelessWidget {
                                               child: LinearProgressIndicator(
                                                 value: controller
                                                     .progressMap[ref.name],
-                                                backgroundColor: Colors.black26,
+                                                backgroundColor: Colors.blue,
+                                                color: Colors.blue,
                                               ),
                                             )
                                           : TextButton(

@@ -1,0 +1,7 @@
+# Ignore APK files
+build/app/outputs/apk/debug/app-debug.apk
+build/app/outputs/apk/
+build/
+# Ignore BFG and Git files
+bfg-1.14.0.jar
+demo_todoapp.git/

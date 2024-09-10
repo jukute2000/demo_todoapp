@@ -1,0 +1,23 @@
+[debug] [2024-09-04T09:33:58.054Z] ----------------------------------------------------------------------
+[debug] [2024-09-04T09:33:58.058Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\LTBao\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js apps:create android demo_todoapp (android) --package-name=com.example.demo_todoapp --json --project=todoapp-88ce9
+[debug] [2024-09-04T09:33:58.058Z] CLI Version:   13.16.0
+[debug] [2024-09-04T09:33:58.059Z] Platform:      win32
+[debug] [2024-09-04T09:33:58.059Z] Node Version:  v20.16.0
+[debug] [2024-09-04T09:33:58.059Z] Time:          Wed Sep 04 2024 16:33:58 GMT+0700 (Indochina Time)
+[debug] [2024-09-04T09:33:58.059Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-04T09:33:58.139Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"flutter"}
+[debug] [2024-09-04T09:33:58.143Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-04T09:33:58.144Z] > authorizing via signed-in user (jukute2000@gmail.com)
+[info] Create your ANDROID app in project todoapp-88ce9:
+[debug] [2024-09-04T09:33:58.150Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/todoapp-88ce9/androidApps [none]
+[debug] [2024-09-04T09:33:58.150Z] >>> [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/todoapp-88ce9/androidApps {"displayName":"demo_todoapp (android)","packageName":"com.example.demo_todoapp"}
+[debug] [2024-09-04T09:33:58.992Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1beta1/projects/todoapp-88ce9/androidApps 409
+[debug] [2024-09-04T09:33:58.993Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/todoapp-88ce9/androidApps {"error":{"code":409,"message":"Requested entity already exists","status":"ALREADY_EXISTS"}}
+[debug] [2024-09-04T09:33:58.994Z] HTTP Error: 409, Requested entity already exists
+[debug] [2024-09-04T09:33:59.250Z] FirebaseError: HTTP Error: 409, Requested entity already exists
+    at responseToError (C:\Users\LTBao\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:49:12)
+    at RetryOperation._fn (C:\Users\LTBao\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:305:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to create Android app for project todoapp-88ce9. See firebase-debug.log for more info.

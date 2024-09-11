@@ -43,10 +43,19 @@ class ChangePasswordController extends GetxController {
         Get.offAndToNamed("/home");
       }
     } on FirebaseException catch (e) {
+      if (e.code == "weak-password") {
+        Get.showSnackbar(
+          snackBarWidget(
+            "Change password fail",
+            "the password is not strong enough.",
+            false,
+          ),
+        );
+      }
       Get.showSnackbar(
         snackBarWidget(
           "Change password fail",
-          e.message.toString(),
+          e.code,
           false,
         ),
       );

@@ -43,10 +43,8 @@ class SignupLoginController extends GetxController {
 
   Future<void> OnSignUp() async {
     String tmp = await auth.createdAccount(
-        emailController.text, passwordController.text);
+        emailController.text, passwordController.text, nameController.text);
     if (tmp == "Account Created") {
-      await FirebaseAuth.instance.currentUser!
-          .updateDisplayName(nameController.text);
       Get.showSnackbar(
         snackBarWidget(
           "Sign up success",

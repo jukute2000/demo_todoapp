@@ -17,6 +17,7 @@ class Home extends StatelessWidget {
           centerTitle: true,
         ),
         drawer: Drawer(
+          backgroundColor: Colors.white,
           child: Column(
             children: [
               UserAccountsDrawerHeader(

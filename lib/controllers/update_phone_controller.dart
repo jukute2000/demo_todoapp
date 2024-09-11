@@ -38,14 +38,6 @@ class UpdatePhoneController extends GetxController {
           verifiId = verificationId;
         },
       );
-    } on FirebaseException catch (ex) {
-      Get.showSnackbar(
-        snackBarWidget(
-          "Error",
-          "$ex",
-          false,
-        ),
-      );
     } catch (e) {
       Get.showSnackbar(
         snackBarWidget(
@@ -68,20 +60,32 @@ class UpdatePhoneController extends GetxController {
       );
     } else {
       isLoading.value = true;
-      String smsCode = phoneOTP.text.trim();
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verifiId, smsCode: smsCode);
-      await FirebaseAuth.instance.currentUser!
-          .updatePhoneNumber(credential)
-          .then(
-            (value) => Get.showSnackbar(
-              snackBarWidget(
-                "Update User Phone",
-                "Update user phone success",
-                true,
+      try {
+        String smsCode = phoneOTP.text.trim();
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: verifiId, smsCode: smsCode);
+        await FirebaseAuth.instance.currentUser!
+            .updatePhoneNumber(credential)
+            .then(
+              (value) => Get.showSnackbar(
+                snackBarWidget(
+                  "Update User Phone",
+                  "Update user phone success",
+                  true,
+                ),
               ),
+            );
+      } on FirebaseException catch (e) {
+        if (e.code == "invalid-verification-code") {
+          Get.showSnackbar(
+            snackBarWidget(
+              "Update User Phone",
+              "The verification code of the credential is not valid.",
+              false,
             ),
           );
+        }
+      }
       isLoading.value = false;
     }
   }

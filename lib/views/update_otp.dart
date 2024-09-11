@@ -1,4 +1,5 @@
 import 'package:demo_todoapp/controllers/update_phone_controller.dart';
+import 'package:demo_todoapp/widgets/backgroud.dart';
 import 'package:demo_todoapp/widgets/inputText.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,22 +23,10 @@ class OTP extends StatelessWidget {
         ),
         body: controller.isLoading.value
             ? Center(child: const CircularProgressIndicator())
-            : SafeArea(
-                child: Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 2.5,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/football.jpg"),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                          Colors.white.withOpacity(0.3),
-                          BlendMode.dstATop,
-                        ),
-                      ),
-                    ),
+            : Backgroud(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

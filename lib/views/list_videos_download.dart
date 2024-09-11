@@ -30,7 +30,7 @@ class VideosDowload extends StatelessWidget {
                   replacement: RefreshIndicator(
                     child: SafeArea(
                       child: Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Table(
                           columnWidths: {
                             0: FlexColumnWidth(8),

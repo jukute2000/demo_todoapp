@@ -50,7 +50,7 @@ class HomeController extends GetxController {
             ),
           ),
         );
-    Get.offAndToNamed("/loginsignup");
+    Get.offAllNamed("/loginsignup");
   }
 
   Future<void> getDataUser() async {

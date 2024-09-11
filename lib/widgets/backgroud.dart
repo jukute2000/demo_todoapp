@@ -11,7 +11,7 @@ class Backgroud extends StatelessWidget {
       children: [
         Center(
           child: Container(
-            height: MediaQuery.of(context).size.height / 3,
+            height: MediaQuery.of(context).size.height / 2.3,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               shape: BoxShape.circle,

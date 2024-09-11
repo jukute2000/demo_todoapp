@@ -1,4 +1,5 @@
 import 'package:demo_todoapp/controllers/update_information_user_controller.dart';
+import 'package:demo_todoapp/widgets/backgroud.dart';
 import 'package:demo_todoapp/widgets/inputText.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,24 +19,10 @@ class UpdateInfomationUser extends StatelessWidget {
           onPressed: () => Get.back(result: true),
         ),
       ),
-      body: SafeArea(
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.only(
-              right: 12,
-              left: 12,
-            ),
-            width: MediaQuery.of(context).size.width,
-            height: 500,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: const AssetImage("assets/images/football.jpg"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    Colors.white.withOpacity(0.4), BlendMode.dstATop),
-              ),
-            ),
+      body: Backgroud(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +70,7 @@ class UpdateInfomationUser extends StatelessWidget {
                         onPressed: () async {
                           await controller.updateInformationUser();
                         },
-                        backgroundColor: Colors.white.withOpacity(0.8),
+                        backgroundColor: Colors.white.withOpacity(0.6),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -100,7 +87,7 @@ class UpdateInfomationUser extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 2.5,
                       child: FloatingActionButton(
                         heroTag: "move_page_changepassword",
-                        backgroundColor: Colors.white.withOpacity(0.8),
+                        backgroundColor: Colors.white.withOpacity(0.6),
                         onPressed: () {
                           controller.movePageChangePassword();
                         },
@@ -126,7 +113,7 @@ class UpdateInfomationUser extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2.5,
                   child: FloatingActionButton(
                     heroTag: "move_page_update_userphone",
-                    backgroundColor: Colors.white.withOpacity(0.8),
+                    backgroundColor: Colors.white.withOpacity(0.6),
                     onPressed: () {
                       Get.toNamed("/updateuserphone");
                     },

@@ -151,6 +151,7 @@ class Home extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white.withOpacity(0.8),
           onPressed: () {
             Get.toNamed("/add")?.then(
               (value) {
@@ -161,11 +162,15 @@ class Home extends StatelessWidget {
             );
           },
           shape: const CircleBorder(),
-          child: const Icon(Icons.add),
+          child: const Icon(
+            Icons.add,
+            color: Colors.black,
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         bottomNavigationBar: BottomAppBar(
+          color: Colors.white30,
           child: Container(
             padding: EdgeInsets.zero,
           ),

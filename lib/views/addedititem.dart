@@ -1,4 +1,5 @@
 import 'package:demo_todoapp/controllers/addedititem_controller.dart';
+import 'package:demo_todoapp/widgets/backgroud.dart';
 import 'package:demo_todoapp/widgets/inputText.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,18 +22,10 @@ class AddEditItem extends StatelessWidget {
           title: Text(controller.choosepage.value ? "ADD ITEM" : "EDIT ITEM"),
           centerTitle: true,
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16, left: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: const AssetImage("assets/images/football.jpg"),
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                    fit: BoxFit.cover),
-              ),
+        body: Backgroud(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -44,7 +37,7 @@ class AddEditItem extends StatelessWidget {
                     check: false,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 12,
                   ),
                   inputText(
                     keyboardType: TextInputType.phone,
@@ -54,13 +47,13 @@ class AddEditItem extends StatelessWidget {
                     check: false,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 12,
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: FloatingActionButton(
                       heroTag: "submit_add_or_edit",
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.white.withOpacity(0.6),
                       onPressed: () {
                         controller.choosepage.value
                             ? controller.addItem()

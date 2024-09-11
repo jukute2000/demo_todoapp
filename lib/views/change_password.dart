@@ -20,7 +20,7 @@ class ChangePassword extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 const Image(
@@ -79,7 +79,7 @@ class ChangePassword extends StatelessWidget {
                     onPressed: () {
                       controller.onChangePassword();
                     },
-                    backgroundColor: Colors.white.withOpacity(0.9),
+                    backgroundColor: Colors.white.withOpacity(0.6),
                     child: const Text(
                       "Submit",
                       style: TextStyle(color: Colors.black),

@@ -1,4 +1,5 @@
 import 'package:demo_todoapp/controllers/signup_login_controller.dart';
+import 'package:demo_todoapp/widgets/backgroud.dart';
 import 'package:demo_todoapp/widgets/inputText.dart';
 
 import 'package:flutter/material.dart';
@@ -22,18 +23,10 @@ class SignupLogin extends StatelessWidget {
                 ),
                 centerTitle: true,
               ),
-              body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                          image: const AssetImage("assets/images/football.jpg"),
-                          fit: BoxFit.cover),
-                    ),
+              body: Backgroud(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -45,7 +38,7 @@ class SignupLogin extends StatelessWidget {
                           check: false,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         inputText(
                           keyboardType: TextInputType.visiblePassword,
@@ -55,7 +48,7 @@ class SignupLogin extends StatelessWidget {
                           check: true,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
@@ -64,13 +57,13 @@ class SignupLogin extends StatelessWidget {
                             onPressed: () {
                               signlogincoller.OnLogin();
                             },
-                            backgroundColor: Colors.blue.shade200,
+                            backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.admin_panel_settings),
                                 SizedBox(
-                                  width: 16,
+                                  width: 8,
                                 ),
                                 Text(
                                   "LOGIN",
@@ -81,7 +74,7 @@ class SignupLogin extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
@@ -90,13 +83,13 @@ class SignupLogin extends StatelessWidget {
                             onPressed: () {
                               signlogincoller.onChangePage();
                             },
-                            backgroundColor: Colors.blue.shade200,
+                            backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.person_add_alt_rounded),
                                 SizedBox(
-                                  width: 16,
+                                  width: 8,
                                 ),
                                 Text(
                                   "SIGN UP",
@@ -123,19 +116,10 @@ class SignupLogin extends StatelessWidget {
                 ),
                 centerTitle: true,
               ),
-              body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: const AssetImage("assets/images/football.jpg"),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                      ),
-                    ),
+              body: Backgroud(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -147,7 +131,7 @@ class SignupLogin extends StatelessWidget {
                           check: false,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         inputText(
                           controller: signlogincoller.emailController,
@@ -157,7 +141,7 @@ class SignupLogin extends StatelessWidget {
                           check: false,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         inputText(
                           controller: signlogincoller.passwordController,
@@ -167,7 +151,7 @@ class SignupLogin extends StatelessWidget {
                           check: true,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
@@ -176,13 +160,13 @@ class SignupLogin extends StatelessWidget {
                             onPressed: () {
                               signlogincoller.OnSignUp();
                             },
-                            backgroundColor: Colors.blue.shade200,
+                            backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.person_add_alt_rounded),
                                 SizedBox(
-                                  width: 16,
+                                  width: 8,
                                 ),
                                 Text(
                                   "SIGN UP",
@@ -193,7 +177,7 @@ class SignupLogin extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 12,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
@@ -202,13 +186,13 @@ class SignupLogin extends StatelessWidget {
                             onPressed: () {
                               signlogincoller.onChangePage();
                             },
-                            backgroundColor: Colors.blue.shade200,
+                            backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.admin_panel_settings),
                                 SizedBox(
-                                  width: 16,
+                                  width: 8,
                                 ),
                                 Text(
                                   "LOGIN",

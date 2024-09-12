@@ -79,11 +79,17 @@ class Home extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(Icons.upload),
-                title: Text("Upload File"),
+                title: Text("Upload Video"),
                 onTap: () {
                   Get.toNamed("/video");
                 },
-              )
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.upload),
+                title: Text("Upload Image"),
+                onTap: () => Get.toNamed("/image"),
+              ),
             ],
           ),
         ),

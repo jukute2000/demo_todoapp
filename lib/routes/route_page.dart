@@ -7,6 +7,7 @@ import 'package:demo_todoapp/views/signuplogin.dart';
 import 'package:demo_todoapp/views/update_infomation_user.dart';
 import 'package:demo_todoapp/views/update_otp.dart';
 import 'package:demo_todoapp/views/update_phone.dart';
+import 'package:demo_todoapp/views/upload_image.dart';
 import 'package:demo_todoapp/views/video.dart';
 import 'package:get/get.dart';
 
@@ -64,5 +65,11 @@ List<GetPage<dynamic>> routePage() => [
         page: () => const VideosDowload(),
         fullscreenDialog: true,
         preventDuplicates: false,
-      )
+      ),
+      GetPage(
+        name: "/image",
+        page: () => const UploadImage(),
+        fullscreenDialog: true,
+        preventDuplicates: false,
+      ),
     ];

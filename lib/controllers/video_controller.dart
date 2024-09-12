@@ -81,26 +81,16 @@ class VideoController extends GetxController {
           progressMap["$fileName"] = count / total;
         },
       );
-      if (dowmloadUrl.contains(".mp4")) {
-        await GallerySaver.saveVideo(savePath, toDcim: true);
-        progressMap["$fileName"] = 0;
-        Get.showSnackbar(
+      await GallerySaver.saveVideo(savePath, toDcim: true).then(
+        (value) => Get.showSnackbar(
           snackBarWidget(
             "Download Video Success",
             "Video $fileName download success",
             true,
           ),
-        );
-      } else if (dowmloadUrl.contains(".jpg")) {
-        await GallerySaver.saveImage(savePath, toDcim: true);
-        Get.showSnackbar(
-          snackBarWidget(
-            "Download Image Success",
-            "Image $fileName download success",
-            true,
-          ),
-        );
-      }
+        ),
+      );
+      progressMap["$fileName"] = 0;
     } catch (e) {
       Get.showSnackbar(
         snackBarWidget(
@@ -144,8 +134,16 @@ class VideoController extends GetxController {
       File file = File(savePath);
       file.deleteSync();
       await getDownloadFiles();
-      isLoading.value = false;
-    } catch (e) {}
+      Get.showSnackbar(
+        snackBarWidget("Delete Success", "Video $fileName deleted", true),
+      );
+    } catch (e) {
+      Get.showSnackbar(
+        snackBarWidget(
+            "Delete fail", "Failed to delete file $fileName : $e", false),
+      );
+    }
+    isLoading.value = false;
   }
 
   Future<void> deleteFile(String fileName) async {

@@ -105,7 +105,10 @@ class UploadImage extends StatelessWidget {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 TextButton(
-                                                  onPressed: () async {},
+                                                  onPressed: () async {
+                                                    await controller
+                                                        .openImage(ref.name);
+                                                  },
                                                   child: Row(
                                                     children: [
                                                       Icon(
@@ -216,7 +219,9 @@ class UploadImage extends StatelessWidget {
         onSelected: (value) async {
           if (value == "take") {
             await controller.takePhotoUpload();
-          } else if (value == "pick") {}
+          } else if (value == "pick") {
+            await controller.pickImage();
+          }
         },
         color: Colors.white.withOpacity(0.8),
         itemBuilder: (context) {

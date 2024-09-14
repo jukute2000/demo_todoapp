@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:demo_todoapp/widgets/snackbar_gold.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ImageController extends GetxController {
   RxBool isChange = true.obs;
@@ -19,19 +23,34 @@ class ImageController extends GetxController {
   List<File> imagesDowloaded = [];
   List<String> nameImagesDowloaded = [];
   List<String> listUrlDownload = [];
+  late Directory dir;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     getPhotosUpload();
+    dir = await getApplicationDocumentsDirectory();
   }
 
   void changeView() {
     isChange.value ? isChange.value = false : isChange.value = true;
   }
 
+  Future<void> pickImage() async {
+    final file = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (file != null) {
+      String fileName = await getFileName();
+      isLoading.value = true;
+      await uploadFile(File(file.files.first.path!), fileName);
+      getPhotosUpload();
+    } else {
+      Get.showSnackbar(
+        snackBarWidget("Image Not Select", "", false),
+      );
+    }
+  }
+
   Future<void> getPhotoDownloaded() async {
-    Directory dir = await getApplicationDocumentsDirectory();
     List<FileSystemEntity> fileList = dir.listSync();
     List<FileSystemEntity> files = fileList
         .where(
@@ -74,19 +93,24 @@ class ImageController extends GetxController {
     final XFile? file = await picker.pickImage(source: ImageSource.camera);
     String fileName = await getFileName();
     if (file != null && fileName != "") {
-      Reference ref =
-          FirebaseStorage.instance.ref().child("Images/$_userid/$fileName.jpg");
-      await ref.putFile(File(file.path));
-      await getPhotosUpload();
-      Get.showSnackbar(
-        snackBarWidget("Upload Image", "Image uploaded success", true),
-      );
+      await uploadFile(File(file.path), fileName);
     } else {
       Get.showSnackbar(
-        snackBarWidget("Upload Image", "Image uploaded fail", false),
+        snackBarWidget("File not selected", "", false),
       );
     }
     isLoading.value = false;
+  }
+
+  Future<void> uploadFile(File file, String fileName) async {
+    Reference ref =
+        FirebaseStorage.instance.ref().child("Images/$_userid/$fileName.jpg");
+    await ref.putFile(File(file.path)).then(
+          (p0) => Get.showSnackbar(
+            snackBarWidget("Upload Image", "Image uploaded success", true),
+          ),
+        );
+    await getPhotosUpload();
   }
 
   Future<void> deleteImageUpload(String fileName) async {
@@ -110,7 +134,6 @@ class ImageController extends GetxController {
   Future<void> downloadImageUpload(String urlDownload, String fileName) async {
     try {
       Dio dio = Dio();
-      Directory dir = await getApplicationDocumentsDirectory();
       String savePath = "${dir.path}/$fileName";
       await dio.download(
         urlDownload,
@@ -136,73 +159,98 @@ class ImageController extends GetxController {
     }
   }
 
-  Future<String> getFileName() async {
-    String fileName = "";
-    await Get.defaultDialog(
-      title: "Enter Image Name",
-      content: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              onChanged: (value) => fileName = value,
-              decoration: InputDecoration(
-                labelText: "Enter Image Name",
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Get.back(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.cancel,
-                        color: Colors.red,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "Cancel",
-                        style: TextStyle(color: Colors.red),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                TextButton(
-                  onPressed: () => Get.back(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.save,
-                        color: Colors.green,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "Save",
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
+  Future<void> openImage(String fileName) async {
+    File file = File("${dir.path}/$fileName");
+    if (await Permission.manageExternalStorage.request().isGranted) {
+      if (await file.exists()) {
+        await OpenFile.open(file.path);
+      } else {
+        Get.showSnackbar(
+          snackBarWidget(
+            "Error",
+            "File does not exist: ${file.path}",
+            false,
+          ),
+        );
+      }
+    } else {
+      Get.showSnackbar(
+        snackBarWidget(
+          "Error",
+          "Permission denied for external storage access",
+          false,
         ),
-      ),
-    );
-    return fileName;
+      );
+    }
   }
+}
+
+Future<String> getFileName() async {
+  String fileName = "";
+  await Get.defaultDialog(
+    title: "Enter Image Name",
+    content: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          TextField(
+            onChanged: (value) => fileName = value,
+            decoration: InputDecoration(
+              labelText: "Enter Image Name",
+            ),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.red),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.save,
+                      color: Colors.green,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Save",
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
+  return fileName;
 }

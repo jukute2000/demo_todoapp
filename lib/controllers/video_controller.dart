@@ -19,11 +19,12 @@ class VideoController extends GetxController {
   RxBool isLoading = true.obs;
   RxMap progressMap = {}.obs;
   List<File> filesDownload = [];
-
+  late Directory appDocDir;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     getUploadedFiles();
+    appDocDir = await getApplicationSupportDirectory();
   }
 
   Future<void> recordVideo() async {
@@ -72,7 +73,6 @@ class VideoController extends GetxController {
           FirebaseStorage.instance.ref().child("Video/$_uid/$fileName");
       String dowmloadUrl = await storageRef.getDownloadURL();
       Dio dio = Dio();
-      Directory appDocDir = await getApplicationDocumentsDirectory();
       String savePath = "${appDocDir.path}/$fileName";
       await dio.download(
         dowmloadUrl,
@@ -129,8 +129,7 @@ class VideoController extends GetxController {
   Future<void> deleteFileDownload(String fileName) async {
     try {
       isLoading.value = true;
-      Directory dir = await getApplicationDocumentsDirectory();
-      String savePath = "${dir.path}/$fileName";
+      String savePath = "${appDocDir.path}/$fileName";
       File file = File(savePath);
       file.deleteSync();
       await getDownloadFiles();
@@ -186,7 +185,6 @@ class VideoController extends GetxController {
   Future<void> getDownloadFiles() async {
     try {
       isLoading.value = true;
-      Directory appDocDir = await getApplicationDocumentsDirectory();
 
       List<FileSystemEntity> fileList = appDocDir.listSync();
 
@@ -232,7 +230,6 @@ class VideoController extends GetxController {
 
   Future<void> openFile(String fileName) async {
     if (await Permission.manageExternalStorage.request().isGranted) {
-      Directory appDocDir = await getApplicationDocumentsDirectory();
       String savePath = "${appDocDir.path}/$fileName";
       File file = File(savePath);
       if (await file.exists()) {

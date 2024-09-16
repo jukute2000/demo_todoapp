@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:demo_todoapp/widgets/getFileName.dart';
 import 'package:demo_todoapp/widgets/snackbar_gold.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -182,74 +182,4 @@ class ImageController extends GetxController {
       );
     }
   }
-}
-
-Future<String> getFileName() async {
-  String fileName = "";
-  await Get.defaultDialog(
-    title: "Enter Image Name",
-    content: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextField(
-            onChanged: (value) => fileName = value,
-            decoration: InputDecoration(
-              labelText: "Enter Image Name",
-            ),
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.red),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              TextButton(
-                onPressed: () => Get.back(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.save,
-                      color: Colors.green,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      "Save",
-                      style: TextStyle(color: Colors.green),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
-  );
-  return fileName;
 }

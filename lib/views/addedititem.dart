@@ -49,6 +49,59 @@ class AddEditItem extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 60,
+                          padding: EdgeInsets.all(12),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Colors.grey.shade200,
+                          ),
+                          child: Obx(
+                            () => Text(
+                              controller.imageStr == ""
+                                  ? "Choose Image"
+                                  : "${controller.imageStr}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: FloatingActionButton(
+                          heroTag: "Put Item Image",
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          onPressed: () async {
+                            await controller.pickFile();
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.file_upload),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text("Choose File")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: FloatingActionButton(
@@ -75,7 +128,7 @@ class AddEditItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

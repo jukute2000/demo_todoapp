@@ -54,6 +54,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getDataUser() async {
+    //
     user = FirebaseAuth.instance.currentUser!;
     userName.text = user.displayName ?? "";
     userN.value = user.displayName ?? "";
@@ -101,6 +102,7 @@ class HomeController extends GetxController {
     );
   }
 
+  //function lấy item lưu trong firebase
   Future<void> getItems() async {
     itemName.value = "";
     itemNumber.value = "";

@@ -36,16 +36,19 @@ class ImageController extends GetxController {
   }
 
   Future<void> pickImage() async {
-    final file = await FilePicker.platform.pickFiles(type: FileType.image);
-    if (file != null) {
-      String fileName = await getFileName();
-      isLoading.value = true;
-      await uploadFile(File(file.files.first.path!), fileName);
-      getPhotosUpload();
-    } else {
-      Get.showSnackbar(
-        snackBarWidget("Image Not Select", "", false),
-      );
+    if (await Permission.photos.request().isGranted) {
+      final file = await FilePicker.platform
+          .pickFiles(type: FileType.image, allowMultiple: false);
+      if (file != null) {
+        String fileName = await getFileName();
+        isLoading.value = true;
+        await uploadFile(File(file.files.single.path!), fileName);
+        getPhotosUpload();
+      } else {
+        Get.showSnackbar(
+          snackBarWidget("Image Not Select", "", false),
+        );
+      }
     }
   }
 

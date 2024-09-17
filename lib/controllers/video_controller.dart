@@ -50,10 +50,10 @@ class VideoController extends GetxController {
   }
 
   Future<void> pickVideo() async {
-    final video = await FilePicker.platform.pickFiles();
+    final video = await FilePicker.platform.pickFiles(type: FileType.video);
     isLoading.value = true;
     if (video != null) {
-      await uploadVideoToDatabase(File(video.files.first.path!));
+      await uploadVideoToDatabase(File(video.files.single.path!));
       getUploadedFiles();
     } else {
       Get.showSnackbar(

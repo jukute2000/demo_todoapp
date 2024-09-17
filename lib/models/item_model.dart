@@ -1,15 +1,25 @@
 class Item {
   String name;
-  String number;
-  String image;
-  Item({required this.name, required this.number, required this.image});
+  String detail;
+  String imagePartDowload;
+  String imagePart;
+  Item(
+      {required this.name,
+      required this.detail,
+      required this.imagePartDowload,
+      required this.imagePart});
 
   factory Item.fromToJson(Map<String, dynamic> json) => Item(
         name: json["name"],
-        number: json["number"],
-        image: json["image"],
+        detail: json["detail"],
+        imagePartDowload: json["imagePartDowload"],
+        imagePart: json["imagePart"],
       );
 
-  Map<String, dynamic> toJson() =>
-      {"name": name, "number": number, "image": image};
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "detail": detail,
+        "imagePartDowload": imagePartDowload,
+        "imagePart": imagePart,
+      };
 }

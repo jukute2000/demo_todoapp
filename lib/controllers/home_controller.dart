@@ -2,19 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_todoapp/widgets/snackbar_gold.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/item_model.dart';
 
 class HomeController extends GetxController {
   RxBool isLoading = true.obs;
+  RxBool isView = true.obs;
   RxList<Item> items = <Item>[].obs;
   RxList<String> itemsId = <String>[].obs;
   final db = FirebaseFirestore.instance;
   //thuoc tinh qua page edit
-  RxString pageAddOrEdit = "Add".obs;
-  RxString itemName = "".obs;
-  RxString itemNumber = "".obs;
+  String pageAddOrEdit = "Add";
+  String itemName = "";
+  String itemDetail = "";
+  String itemImagePart = "";
+  String itemImagePartDownload = "";
   RxString editDocumentId = "".obs;
   //thuoc tinh user
   User user = FirebaseAuth.instance.currentUser!;
@@ -27,6 +31,10 @@ class HomeController extends GetxController {
     super.onInit();
     getItems();
     getDataUser();
+  }
+
+  void changeView() {
+    isView.value ? isView.value = false : isView.value = true;
   }
 
   movePageUpdateInfomationUser() {
@@ -60,10 +68,13 @@ class HomeController extends GetxController {
     userN.value = user.displayName ?? "";
   }
 
-  void movePage(String name, String number, String id) {
-    pageAddOrEdit.value = "Edit";
-    itemName.value = name;
-    itemNumber.value = number;
+  void movePage(String name, String detail, String id, String filePart,
+      String imagePartDownload) {
+    pageAddOrEdit = "Edit";
+    itemName = name;
+    itemDetail = detail;
+    itemImagePart = filePart;
+    itemImagePartDownload = imagePartDownload;
     editDocumentId.value = id;
     Get.toNamed("/add")?.then(
       (value) {
@@ -74,7 +85,11 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> deleteItem(String itemId) async {
+  Future<void> deleteItem(String itemId, String fileName) async {
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child("ItemsImage/${user.uid}/$fileName");
+    ref.delete();
     await db
         .collection("users")
         .doc(user.uid)
@@ -104,10 +119,12 @@ class HomeController extends GetxController {
 
   //function lấy item lưu trong firebase
   Future<void> getItems() async {
-    itemName.value = "";
-    itemNumber.value = "";
+    itemName = "";
+    itemDetail = "";
+    itemImagePart = "";
+    itemImagePartDownload = "";
     editDocumentId.value = "";
-    pageAddOrEdit.value = "Add";
+    pageAddOrEdit = "Add";
     isLoading.value = true;
     items.clear();
     itemsId.clear();

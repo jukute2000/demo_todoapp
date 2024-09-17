@@ -1,4 +1,5 @@
 import 'package:demo_todoapp/controllers/home_controller.dart';
+import 'package:demo_todoapp/models/item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -9,12 +10,23 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
-
+    final size = MediaQuery.of(context).size;
     return Obx(
       () => Scaffold(
         appBar: AppBar(
           title: const Text("TODO APP"),
           centerTitle: true,
+          actions: [
+            Obx(
+              () => IconButton(
+                  onPressed: () {
+                    homeController.changeView();
+                  },
+                  icon: Icon(homeController.isView.value
+                      ? Icons.menu
+                      : Icons.apps_outlined)),
+            )
+          ],
         ),
         drawer: Drawer(
           backgroundColor: Colors.white,
@@ -97,61 +109,192 @@ class Home extends StatelessWidget {
           visible: homeController.isLoading.value,
           replacement: RefreshIndicator(
             onRefresh: () => homeController.getItems(),
-            child: ListView.builder(
-              itemCount: homeController.items.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text(homeController.items[index].name),
-                  subtitle: Text(homeController.items[index].number),
-                  trailing: PopupMenuButton(
-                    onSelected: (value) {
-                      if (value == "Delete") {
-                        homeController
-                            .deleteItem(homeController.itemsId[index]);
-                      } else {
-                        homeController.movePage(
-                          homeController.items[index].name,
-                          homeController.items[index].number,
-                          homeController.itemsId[index],
-                        );
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: "Delete",
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.delete,
-                              color: Colors.red,
+            child: homeController.isView.value
+                ? ListView.builder(
+                    itemCount: homeController.items.length,
+                    itemBuilder: (context, index) {
+                      Item item = homeController.items[index];
+                      return ListTile(
+                        leading: const Icon(Icons.abc),
+                        title: Text(item.name),
+                        subtitle: Text(item.detail),
+                        trailing: PopupMenuButton(
+                          onSelected: (value) {
+                            if (value == "Delete") {
+                              homeController.deleteItem(
+                                  homeController.itemsId[index],
+                                  item.imagePart.split("/").last);
+                            } else {
+                              homeController.movePage(
+                                  item.name,
+                                  item.detail,
+                                  homeController.itemsId[index],
+                                  item.imagePart,
+                                  item.imagePartDowload);
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            const PopupMenuItem(
+                              value: "Delete",
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text("Delete Item")
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              width: 8,
+                            const PopupMenuItem(
+                              value: "Edit",
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.edit,
+                                    color: Colors.yellow,
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text("Edit Item")
+                                ],
+                              ),
                             ),
-                            Text("Delete Item")
                           ],
                         ),
-                      ),
-                      const PopupMenuItem(
-                          value: "Edit",
-                          child: Row(
+                      );
+                    },
+                  )
+                : GridView.builder(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 500,
+                    ),
+                    itemCount: homeController.items.length,
+                    itemBuilder: (context, index) {
+                      Item item = homeController.items[index];
+                      return Card(
+                        margin: EdgeInsets.all(16),
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
-                              Icon(
-                                Icons.edit,
-                                color: Colors.yellow,
+                              Container(
+                                height: size.height / 5,
+                                width: size.width / 1.5,
+                                child: Image(
+                                  image: NetworkImage(item.imagePartDowload),
+                                  fit: BoxFit.fitWidth,
+                                ),
                               ),
-                              SizedBox(
-                                width: 8,
+                              Divider(
+                                height: 18,
                               ),
-                              Text("Edit Item")
+                              Row(
+                                children: [
+                                  Text(
+                                    "Name:",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(item.name),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Detail:",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(item.detail),
+                                ],
+                              ),
+                              Divider(
+                                height: 18,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: size.width / 3,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        homeController.movePage(
+                                          item.name,
+                                          item.detail,
+                                          homeController.itemsId[index],
+                                          item.imagePart,
+                                          item.imagePartDowload,
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.edit,
+                                            color: Colors.yellow,
+                                          ),
+                                          Text(
+                                            "Edit Item",
+                                            style:
+                                                TextStyle(color: Colors.yellow),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Container(
+                                    width: size.width / 3,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        homeController.deleteItem(
+                                          homeController.itemsId[index],
+                                          item.imagePart.split("/").last,
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            "Delete Item",
+                                            style: TextStyle(color: Colors.red),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
-                          )),
-                    ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
           child: const Center(
             child: CircularProgressIndicator(),

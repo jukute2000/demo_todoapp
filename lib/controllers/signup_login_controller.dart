@@ -10,34 +10,46 @@ class SignupLoginController extends GetxController {
   final Auth auth = Auth();
   RxBool isLogin = true.obs;
 
-  onChangePage() {
-    isLogin.value ? isLogin.value = false : isLogin.value = true;
-    nameController.text = "";
-    emailController.text = "";
-    passwordController.text = "";
+  @override
+  void onInit() {
+    super.onInit();
+    // Đặt các giá trị controller về null khi khởi tạo
+    clearControllers();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void clearControllers() {
+    nameController.clear();
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  void onChangePage() {
+    isLogin.value = !isLogin.value;
+    clearControllers(); // Xóa giá trị trong các controller
+  }
+
+  Future<void> OnLoginFacebook() async {
+    String tmp = await auth.loginedFacebook();
+    handleLoginResponse(tmp);
+  }
+
+  Future<void> OnLoginGoogle() async {
+    String tmp = await auth.loginedGoogle();
+    handleLoginResponse(tmp);
   }
 
   Future<void> OnLogin() async {
     String tmp =
         await auth.loginedAcount(emailController.text, passwordController.text);
-    if (tmp == "Login account") {
-      Get.showSnackbar(
-        snackBarWidget(
-          "Login success",
-          tmp,
-          true,
-        ),
-      );
-      Get.offAndToNamed("/home");
-    } else {
-      Get.showSnackbar(
-        snackBarWidget(
-          "Login failed",
-          tmp,
-          false,
-        ),
-      );
-    }
+    handleLoginResponse(tmp);
   }
 
   Future<void> OnSignUp() async {
@@ -51,12 +63,33 @@ class SignupLoginController extends GetxController {
           true,
         ),
       );
-      OnLogin();
+      await OnLogin(); // Gọi đăng nhập ngay sau khi tạo tài khoản
     } else {
       Get.showSnackbar(
         snackBarWidget(
           "Sign up failed",
           tmp,
+          false,
+        ),
+      );
+    }
+  }
+
+  void handleLoginResponse(String response) {
+    if (response == "Login account") {
+      Get.showSnackbar(
+        snackBarWidget(
+          "Login success",
+          response,
+          true,
+        ),
+      );
+      Get.offAndToNamed("/home");
+    } else {
+      Get.showSnackbar(
+        snackBarWidget(
+          "Login failed",
+          response,
           false,
         ),
       );

@@ -13,12 +13,14 @@ class AddEditItem extends StatelessWidget {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Get.back(result: true);
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
+          leading: controller.isLoading.value
+              ? IconButton(
+                  onPressed: () {
+                    Get.back(result: true);
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                )
+              : null,
           title: Text(controller.choosepage.value ? "ADD ITEM" : "EDIT ITEM"),
           centerTitle: true,
         ),

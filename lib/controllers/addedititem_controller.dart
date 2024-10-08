@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class AddEditItemController extends GetxController {
   final db = FirebaseFirestore.instance;
@@ -18,9 +18,9 @@ class AddEditItemController extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController detail = TextEditingController();
   RxString imageName = "".obs;
-  String imagePartDownload = "";
-  String? part;
-  String? editPart;
+  RxString imagePartDownload = "".obs;
+  String? partPick;
+  String? partPrensent;
 
   @override
   void onInit() {
@@ -28,10 +28,10 @@ class AddEditItemController extends GetxController {
     if (homeController.pageAddOrEdit == "Edit") {
       name.text = homeController.itemName;
       detail.text = homeController.itemDetail;
-      imageName.value = homeController.itemImagePart.split("/").last;
-      part = "";
-      editPart = homeController.itemImagePart;
-      imagePartDownload = homeController.itemImagePartDownload;
+      partPrensent = homeController.itemImagePart;
+      imageName.value = partPrensent!.split("/").last;
+      partPick = "";
+      imagePartDownload.value = homeController.itemImagePartDownload;
       choosepage.value = false;
     }
     isLoading.value = false;
@@ -43,8 +43,8 @@ class AddEditItemController extends GetxController {
       allowMultiple: false,
     );
     if (result != null) {
-      part = result.files.single.path;
-      imageName.value = part!.split("/").last;
+      partPick = result.files.single.path;
+      imageName.value = partPick!.split("/").last;
     } else {
       Get.showSnackbar(
         snackBarWidget(
@@ -60,17 +60,16 @@ class AddEditItemController extends GetxController {
 
   Future<void> addItem() async {
     isLoading.value = true;
-    if (part != null && part!.isNotEmpty) {
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child("ItemsImage/${homeController.user.uid}/${imageName.value}");
-      await ref.putFile(File(part!));
-      imagePartDownload = await ref.getDownloadURL();
+    if (partPick != null && partPick!.isNotEmpty) {
+      Reference ref = FirebaseStorage.instance.ref().child(
+          "ItemsImage/${homeController.auth.currentUser!.uid}/${imageName.value}");
+      await ref.putFile(File(partPick!));
+      imagePartDownload.value = await ref.getDownloadURL();
       Item item = Item(
         name: name.text,
         detail: detail.text,
-        imagePartDowload: imagePartDownload,
-        imagePart: part!,
+        imagePartDowload: imagePartDownload.value,
+        imagePart: partPick!,
       );
       await db
           .collection("users")
@@ -109,27 +108,25 @@ class AddEditItemController extends GetxController {
   }
 
   Future<void> editItem() async {
-    if (part != null) {
-      String fileName = editPart!.split("/").last;
-      Reference ref = await FirebaseStorage.instance
-          .ref()
-          .child("ItemsImage/${homeController.user.uid}/$fileName.jpg");
+    print(partPick != null && partPick!.isNotEmpty);
+    isLoading.value = true;
+    if (partPick != null && partPick!.isNotEmpty) {
+      String fileName = partPrensent!.split("/").last;
+      Reference ref = await FirebaseStorage.instance.ref().child(
+          "ItemsImage/${homeController.auth.currentUser!.uid}/$fileName");
       ref.delete();
-      fileName = part!.split("/").last;
-      ref = await FirebaseStorage.instance
-          .ref()
-          .child("ItemsImage/${homeController.user.uid}/$fileName.jpg");
-      ref.putFile(File(part!));
-      imagePartDownload = await ref.getDownloadURL();
-    } else {
-      part = editPart;
+      fileName = partPick!.split("/").last;
+      ref = await FirebaseStorage.instance.ref().child(
+          "ItemsImage/${homeController.auth.currentUser!.uid}/$fileName");
+      await ref.putFile(File(partPick!));
+      imagePartDownload.value = await ref.getDownloadURL();
+      partPrensent = partPick;
     }
-
     Map<String, dynamic> data = {
       "name": name.text,
       "detail": detail.text,
-      "imagePart": part,
-      "imagePartDowload": imagePartDownload
+      "imagePart": partPrensent,
+      "imagePartDowload": imagePartDownload.value
     };
     await db
         .collection("users")
@@ -157,5 +154,6 @@ class AddEditItemController extends GetxController {
         ),
       ),
     );
+    isLoading.value = false;
   }
 }

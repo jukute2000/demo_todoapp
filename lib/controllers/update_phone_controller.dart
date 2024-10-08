@@ -10,6 +10,7 @@ class UpdatePhoneController extends GetxController {
   User user = FirebaseAuth.instance.currentUser!;
   String verifiId = '';
   RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -75,6 +76,8 @@ class UpdatePhoneController extends GetxController {
                 ),
               ),
             );
+        user.reload();
+        Get.offAndToNamed("/home");
       } on FirebaseException catch (e) {
         if (e.code == "invalid-verification-code") {
           Get.showSnackbar(

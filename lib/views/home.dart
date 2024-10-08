@@ -33,8 +33,9 @@ class Home extends StatelessWidget {
           child: Column(
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text("${homeController.userN}"),
-                accountEmail: Text("${homeController.user.email}"),
+                accountName:
+                    Text("${homeController.auth.currentUser?.displayName}"),
+                accountEmail: Text("${homeController.auth.currentUser!.email}"),
                 currentAccountPicture: const Icon(
                   Icons.account_circle,
                   size: 80,

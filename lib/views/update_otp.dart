@@ -46,7 +46,6 @@ class OTP extends StatelessWidget {
                             heroTag: "Send_OTP",
                             onPressed: () async {
                               await controller.UpdateSmsCode();
-                              Get.offAndToNamed("/home");
                             },
                             backgroundColor: Colors.white.withOpacity(0.6),
                             child: Row(

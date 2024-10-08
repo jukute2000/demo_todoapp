@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "241746660862",
+    "firebase_url": "https://todoapp-88ce9-default-rtdb.firebaseio.com",
     "project_id": "todoapp-88ce9",
     "storage_bucket": "todoapp-88ce9.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.demo_phone"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "241746660862-0ip9rl9ci0vh023t3c3605daoi3ppmaa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.demo_phone",
+            "certificate_hash": "52468b0620574e4ddcd944edcd6318527d676673"
+          }
+        },
+        {
+          "client_id": "241746660862-s5k8h6m6e83vd1rfmcmmvee94n38eqjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC33kRC4VBqpUIeXN5MEaYza3pgXUUz23o"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241746660862-s5k8h6m6e83vd1rfmcmmvee94n38eqjn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "241746660862-34093udlg9j7cas1nt8brg5n6avjtl3e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.demoPhone"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +57,20 @@
           "package_name": "com.example.demo_todoapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "241746660862-roja4c78r1tr97bt680mrigtbpjdovos.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.demo_todoapp",
+            "certificate_hash": "52468b0620574e4ddcd944edcd6318527d676673"
+          }
+        },
+        {
+          "client_id": "241746660862-s5k8h6m6e83vd1rfmcmmvee94n38eqjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC33kRC4VBqpUIeXN5MEaYza3pgXUUz23o"
@@ -39,7 +78,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241746660862-s5k8h6m6e83vd1rfmcmmvee94n38eqjn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "241746660862-34093udlg9j7cas1nt8brg5n6avjtl3e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.demoPhone"
+              }
+            }
+          ]
         }
       }
     }

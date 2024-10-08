@@ -9,9 +9,9 @@ class SignupLogin extends StatelessWidget {
   const SignupLogin({super.key});
   @override
   Widget build(BuildContext context) {
-    SignupLoginController signlogincoller = Get.put(SignupLoginController());
+    SignupLoginController signloginconller = Get.put(SignupLoginController());
     return Obx(
-      () => signlogincoller.isLogin.value
+      () => signloginconller.isLogin.value
           ? Scaffold(
               appBar: AppBar(
                 title: const Text(
@@ -34,7 +34,7 @@ class SignupLogin extends StatelessWidget {
                           keyboardType: TextInputType.emailAddress,
                           labelText: "Enter Email",
                           icons: Icons.email,
-                          controller: signlogincoller.emailController,
+                          controller: signloginconller.emailController,
                           check: false,
                         ),
                         const SizedBox(
@@ -44,7 +44,7 @@ class SignupLogin extends StatelessWidget {
                           keyboardType: TextInputType.visiblePassword,
                           labelText: "Enter Password",
                           icons: Icons.password,
-                          controller: signlogincoller.passwordController,
+                          controller: signloginconller.passwordController,
                           check: true,
                         ),
                         const SizedBox(
@@ -55,7 +55,7 @@ class SignupLogin extends StatelessWidget {
                           child: FloatingActionButton(
                             heroTag: "submit_login",
                             onPressed: () {
-                              signlogincoller.OnLogin();
+                              signloginconller.OnLogin();
                             },
                             backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
@@ -81,7 +81,7 @@ class SignupLogin extends StatelessWidget {
                           child: FloatingActionButton(
                             heroTag: "change_page_signup",
                             onPressed: () {
-                              signlogincoller.onChangePage();
+                              signloginconller.onChangePage();
                             },
                             backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
@@ -99,6 +99,63 @@ class SignupLogin extends StatelessWidget {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.all(25),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                "Or Continue With",
+                                style: TextStyle(color: Colors.grey.shade700),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 8,
+                              height: MediaQuery.of(context).size.height / 16,
+                              child: FloatingActionButton(
+                                backgroundColor: Colors.white.withOpacity(0.6),
+                                onPressed: () {
+                                  signloginconller.OnLoginGoogle();
+                                },
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/images/google.png",
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 8,
+                              height: MediaQuery.of(context).size.height / 16,
+                              child: FloatingActionButton(
+                                backgroundColor: Colors.white.withOpacity(0.6),
+                                onPressed: () {
+                                  signloginconller.OnLoginFacebook();
+                                },
+                                child: Image(
+                                  image: AssetImage(
+                                    "assets/images/facebook.png",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -124,7 +181,7 @@ class SignupLogin extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         inputText(
-                          controller: signlogincoller.nameController,
+                          controller: signloginconller.nameController,
                           icons: Icons.person_outline,
                           keyboardType: TextInputType.name,
                           labelText: "Enter Name",
@@ -134,7 +191,7 @@ class SignupLogin extends StatelessWidget {
                           height: 12,
                         ),
                         inputText(
-                          controller: signlogincoller.emailController,
+                          controller: signloginconller.emailController,
                           icons: Icons.email,
                           keyboardType: TextInputType.emailAddress,
                           labelText: "Enter Email",
@@ -144,7 +201,7 @@ class SignupLogin extends StatelessWidget {
                           height: 12,
                         ),
                         inputText(
-                          controller: signlogincoller.passwordController,
+                          controller: signloginconller.passwordController,
                           icons: Icons.password,
                           keyboardType: TextInputType.visiblePassword,
                           labelText: "Enter Password",
@@ -158,7 +215,7 @@ class SignupLogin extends StatelessWidget {
                           child: FloatingActionButton(
                             heroTag: "submit_signup",
                             onPressed: () {
-                              signlogincoller.OnSignUp();
+                              signloginconller.OnSignUp();
                             },
                             backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(
@@ -184,7 +241,7 @@ class SignupLogin extends StatelessWidget {
                           child: FloatingActionButton(
                             heroTag: "change_login",
                             onPressed: () {
-                              signlogincoller.onChangePage();
+                              signloginconller.onChangePage();
                             },
                             backgroundColor: Colors.white.withOpacity(0.6),
                             child: const Row(

@@ -3,7 +3,6 @@ import 'package:demo_todoapp/widgets/snackbar_gold.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/item_model.dart';
 
@@ -21,10 +20,7 @@ class HomeController extends GetxController {
   String itemImagePartDownload = "";
   RxString editDocumentId = "".obs;
   //thuoc tinh user
-  User user = FirebaseAuth.instance.currentUser!;
   FirebaseAuth auth = FirebaseAuth.instance;
-  RxString userN = "".obs;
-  TextEditingController userName = TextEditingController();
 
   @override
   void onInit() {
@@ -48,24 +44,39 @@ class HomeController extends GetxController {
   }
 
   Future<void> logout() async {
-    Get.deleteAll();
-    await auth.signOut().then(
-          (value) => Get.showSnackbar(
-            snackBarWidget(
-              "Logout",
-              "Logout success",
-              true,
-            ),
-          ),
-        );
-    Get.offAllNamed("/loginsignup");
+    try {
+      await auth.signOut();
+      Get.showSnackbar(
+        snackBarWidget(
+          "Logout",
+          "Logout success",
+          true,
+        ),
+      );
+
+      if (auth.currentUser == null) {
+        Get.delete<HomeController>();
+        Get.offAllNamed("/loginsignup");
+      } else {
+        print("User is still signed in: ${auth.currentUser?.uid}");
+      }
+    } catch (error) {
+      Get.showSnackbar(
+        snackBarWidget(
+          "Logout Failed",
+          "Error: $error",
+          false,
+        ),
+      );
+    }
   }
 
   Future<void> getDataUser() async {
-    //
-    user = FirebaseAuth.instance.currentUser!;
-    userName.text = user.displayName ?? "";
-    userN.value = user.displayName ?? "";
+    if (auth.currentUser != null) {
+      await auth.currentUser!.reload();
+    } else {
+      Get.offAllNamed("/loginsignup");
+    }
   }
 
   void movePage(String name, String detail, String id, String filePart,
@@ -88,11 +99,11 @@ class HomeController extends GetxController {
   Future<void> deleteItem(String itemId, String fileName) async {
     Reference ref = FirebaseStorage.instance
         .ref()
-        .child("ItemsImage/${user.uid}/$fileName");
+        .child("ItemsImage/${auth.currentUser!.uid}/$fileName");
     ref.delete();
     await db
         .collection("users")
-        .doc(user.uid)
+        .doc(auth.currentUser!.uid)
         .collection("items")
         .doc(itemId)
         .delete()
@@ -117,27 +128,33 @@ class HomeController extends GetxController {
     );
   }
 
-  //function lấy item lưu trong firebase
   Future<void> getItems() async {
-    itemName = "";
-    itemDetail = "";
-    itemImagePart = "";
-    itemImagePartDownload = "";
-    editDocumentId.value = "";
-    pageAddOrEdit = "Add";
-    isLoading.value = true;
-    items.clear();
-    itemsId.clear();
-    var result =
-        await db.collection("users").doc(user.uid).collection("items").get();
-    for (var item in result.docs) {
-      itemsId.add(item.id);
-      items.add(
-        Item.fromToJson(
-          item.data(),
-        ),
-      );
+    if (auth.currentUser != null) {
+      itemName = "";
+      itemDetail = "";
+      itemImagePart = "";
+      itemImagePartDownload = "";
+      editDocumentId.value = "";
+      pageAddOrEdit = "Add";
+      isLoading.value = true;
+      items.clear();
+      itemsId.clear();
+      var result = await db
+          .collection("users")
+          .doc(auth.currentUser!.uid)
+          .collection("items")
+          .get();
+      for (var item in result.docs) {
+        itemsId.add(item.id);
+        items.add(
+          Item.fromToJson(
+            item.data(),
+          ),
+        );
+      }
+      isLoading.value = false;
+    } else {
+      Get.offAllNamed("/loginsignup");
     }
-    isLoading.value = false;
   }
 }
